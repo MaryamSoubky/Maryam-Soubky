@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maryam Soubky — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#0F4456;
+  --mid:#082674;
+  --surface:rgba(8,38,116,0.35);
+  --border:rgba(44,123,145,0.35);
+  --border-hover:rgba(150,129,217,0.5);
+  --accent:#9681D9;
+  --accent2:#3365CA;
+  --accent3:#2C7B91;
+  --purple-dark:#463181;
+  --text:#e8e4f8;
+  --muted:#7b9bb8;
+  --mono:'Space Mono',monospace;
+  --sans:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:var(--sans);overflow-x:hidden;cursor:none}
+
+.cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:screen;transition:transform 0.1s;transform:translate(-50%,-50%)}
+.cursor-ring{width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all 0.15s ease;transform:translate(-50%,-50%);opacity:0.5}
+canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.45}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);backdrop-filter:blur(18px);background:rgba(15,68,86,0.65)}
+.logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:0.1em}
+.blink{animation:blink 1s step-end infinite}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.1em;transition:color 0.2s}
+.nav-links a:hover{color:var(--accent)}
+
+section{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:6rem 2.5rem}
+
+/* HERO */
+.hero{flex-direction:column;text-align:center}
+.hero-tag{font-family:var(--mono);font-size:11px;color:var(--accent3);letter-spacing:0.3em;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.8s 0.3s forwards}
+.hero h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:800;line-height:0.95;letter-spacing:-0.02em;opacity:0;animation:fadeUp 0.8s 0.5s forwards}
+.hero h1 .outline{color:transparent;-webkit-text-stroke:1.5px var(--accent)}
+.hero-sub{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:1.8rem;line-height:1.9;max-width:500px;opacity:0;animation:fadeUp 0.8s 0.7s forwards}
+.hero-cta{display:flex;gap:1rem;margin-top:2.5rem;opacity:0;animation:fadeUp 0.8s 0.9s forwards;justify-content:center;flex-wrap:wrap}
+.btn{padding:0.75rem 2rem;font-family:var(--mono);font-size:12px;letter-spacing:0.1em;border:1px solid var(--accent);color:var(--accent);background:transparent;cursor:none;transition:all 0.25s;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--accent);color:#0F4456}
+.btn.filled{background:var(--accent);color:#0F4456}
+.btn.filled:hover{background:transparent;color:var(--accent)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.2em;display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:fadeUp 1s 1.6s both}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scrollPulse 2s infinite}
+
+/* ABOUT */
+.about-wrap{display:flex;flex-direction:row;gap:4.5rem;align-items:center;max-width:1100px;width:100%}
+.about-left{flex:1.2}
+.about-right{flex:1}
+.section-label{font-family:var(--mono);font-size:10px;color:var(--accent3);letter-spacing:0.3em;margin-bottom:1rem}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:1.5rem}
+.about-left p{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:2.1;margin-bottom:1rem}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.stat-box{border:1px solid var(--border);padding:1.3rem;background:var(--surface);transition:border-color 0.2s,background 0.2s}
+.stat-box:hover{border-color:var(--accent);background:rgba(150,129,217,0.08)}
+.stat-num{font-size:2rem;font-weight:800;color:var(--accent)}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:0.3rem;letter-spacing:0.1em}
+.edu-box{margin-top:1.5rem;border:1px solid var(--border);padding:1.3rem;background:var(--surface)}
+.edu-school{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:0.3rem}
+.edu-degree{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:0.3rem}
+.edu-dates{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+/* SKILLS */
+.skills-inner{max-width:900px;width:100%;display:flex;flex-direction:column;gap:2.5rem}
+.cat-label{font-family:var(--mono);font-size:10px;color:var(--accent3);letter-spacing:0.2em;margin-bottom:0.8rem}
+.skill-chips{display:flex;flex-wrap:wrap;gap:0.5rem}
+.chip{font-family:var(--mono);font-size:11px;padding:0.4rem 0.9rem;border:1px solid var(--border);color:var(--muted);transition:all 0.2s;cursor:none}
+.chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(150,129,217,0.07)}
+.skill-bar-row{margin-bottom:1rem}
+.sb-top{display:flex;justify-content:space-between;margin-bottom:0.4rem}
+.sb-name{font-family:var(--mono);font-size:11px;color:var(--text)}
+.sb-pct{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.sb-track{height:2px;background:rgba(44,123,145,0.2);width:100%}
+.sb-fill{height:2px;background:linear-gradient(to right,var(--accent2),var(--accent));width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+
+/* PROJECTS */
+.projects-inner{max-width:1100px;width:100%;display:flex;flex-direction:column;gap:2.5rem}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem}
+.proj-card{border:1px solid var(--border);background:var(--surface);padding:2rem;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s,background 0.3s;cursor:none}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--accent2),var(--accent));transform:scaleX(0);transition:transform 0.4s;transform-origin:left}
+.proj-card:hover{border-color:var(--border-hover);transform:translateY(-5px);background:rgba(70,49,129,0.18)}
+.proj-card:hover::before{transform:scaleX(1)}
+.proj-num{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:1rem;letter-spacing:0.2em}
+.proj-title{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;line-height:1.3}
+.proj-stack{font-family:var(--mono);font-size:10px;color:var(--accent3);margin-bottom:0.8rem;letter-spacing:0.05em}
+.proj-desc{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;margin-bottom:1.5rem}
+.proj-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
+.proj-tag{font-family:var(--mono);font-size:10px;padding:0.25rem 0.6rem;background:rgba(150,129,217,0.1);color:var(--accent);border:1px solid rgba(150,129,217,0.22)}
+.proj-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-size:1.1rem;color:var(--muted);transition:color 0.2s,transform 0.2s}
+.proj-card:hover .proj-arrow{color:var(--accent);transform:translate(2px,-2px)}
+
+/* COURSES */
+.courses-inner{max-width:900px;width:100%;display:flex;flex-direction:column;gap:2rem}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.8rem}
+.course-pill{font-family:var(--mono);font-size:11px;padding:0.6rem 1rem;border:1px solid var(--border);color:var(--muted);text-align:center;transition:all 0.2s}
+.course-pill:hover{border-color:var(--accent3);color:var(--text);background:rgba(44,123,145,0.08)}
+
+/* CONTACT */
+.contact-inner{max-width:700px;width:100%;display:flex;flex-direction:column;gap:1.8rem;align-items:center;text-align:center}
+.contact-inner h2{font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1}
+.contact-inner h2 span{color:var(--accent)}
+.contact-inner p{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:2}
+.contact-links{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem}
+.c-link{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:color 0.2s,border-color 0.2s}
+.c-link:hover{color:var(--accent);border-color:var(--accent)}
+
+@keyframes blink{50%{opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+footer{text-align:center;padding:2rem;font-family:var(--mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);position:relative;z-index:1;letter-spacing:0.1em}
+
+@media(max-width:780px){
+  .about-wrap{flex-direction:column;gap:2.5rem}
+  .nav-links a:nth-child(n+3){display:none}
+  section{padding:5rem 1.5rem}
+  nav{padding:1rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+<canvas id="bg"></canvas>
+
+<nav>
+  <div class="logo">maryam.soubky<span class="blink">_</span></div>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#skills">skills</a>
+    <a href="#projects">projects</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" id="home">
+  <div class="hero-tag">// CS · Data Science · Misr International University</div>
+  <h1>
+    <div>Maryam</div>
+    <div class="outline">Soubky</div>
+  </h1>
+  <p class="hero-sub">I build scrapers, systems &amp; models — turning raw data into insight, one clean commit at a time.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn filled">View Projects</a>
+    <a href="#contact" class="btn">Get in Touch</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- ░░ ABOUT ░░ -->
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-left">
+      <div class="section-label">01 // about</div>
+      <h2 class="section-title">Data scientist in the making.</h2>
+      <p>I'm Maryam — a Computer Science student majoring in Data Science at Misr International University, Cairo. I love building things that work: scrapers, web apps, classifiers, management systems.</p>
+      <p>My approach is clean architecture, OOP principles, and always asking "what does this data actually mean?" Currently seeking internships and real-world collaborations.</p>
+      <div class="edu-box">
+        <div class="edu-school">Misr International University</div>
+        <div class="edu-degree">B.Sc. Computer Science — Data Science</div>
+        <div class="edu-dates">Oct. 2022 – Present &nbsp;·&nbsp; Cairo, Egypt</div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Projects Built</div></div>
+        <div class="stat-box"><div class="stat-num">7+</div><div class="stat-label">Languages Used</div></div>
+        <div class="stat-box"><div class="stat-num">95%</div><div class="stat-label">Scraper Accuracy</div></div>
+        <div class="stat-box"><div class="stat-num">3+</div><div class="stat-label">Years Coding</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ SKILLS ░░ -->
+<section id="skills">
+  <div class="skills-inner">
+    <div>
+      <div class="section-label">02 // skills</div>
+      <h2 class="section-title">Tech Stack &amp; Toolkit</h2>
+    </div>
+    <div>
+      <div class="cat-label">// Languages</div>
+      <div class="skill-chips">
+        <div class="chip">Python</div><div class="chip">Java</div><div class="chip">C++</div><div class="chip">JavaScript</div><div class="chip">PHP</div><div class="chip">SQL</div><div class="chip">HTML / CSS</div>
+      </div>
+    </div>
+    <div>
+      <div class="cat-label">// Frameworks &amp; Libraries</div>
+      <div class="skill-chips">
+        <div class="chip">Node.js</div><div class="chip">Express.js</div><div class="chip">JavaFX</div><div class="chip">Selenium</div><div class="chip">BeautifulSoup</div><div class="chip">OpenPyXL</div><div class="chip">AJAX</div><div class="chip">JWT</div>
+      </div>
+    </div>
+    <div>
+      <div class="cat-label">// Databases &amp; Tools</div>
+      <div class="skill-chips">
+        <div class="chip">MySQL</div><div class="chip">MongoDB</div><div class="chip">Git</div><div class="chip">Linux</div><div class="chip">Eclipse</div><div class="chip">MVC Architecture</div><div class="chip">OOP</div>
+      </div>
+    </div>
+    <div>
+      <div class="cat-label">// Proficiency</div>
+      <div id="bars"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ PROJECTS ░░ -->
+<section id="projects">
+  <div class="projects-inner">
+    <div>
+      <div class="section-label">03 // projects</div>
+      <h2 class="section-title">Selected Work</h2>
+    </div>
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <div class="proj-num">001 · Jan 2025</div>
+        <div class="proj-title">IMDb Movie Scraper</div>
+        <div class="proj-stack">Python · Selenium · BeautifulSoup · SQL · OpenPyXL</div>
+        <div class="proj-desc">Scraped IMDb's Top 250 movies — cutting manual effort from hours to 15 minutes at 95% accuracy. Multi-threaded with rate limiting; exports clean Excel data for trend analysis.</div>
+        <div class="proj-tags"><span class="proj-tag">Web Scraping</span><span class="proj-tag">OOP</span><span class="proj-tag">Threading</span></div>
+        <div class="proj-arrow">↗</div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-num">002 · Jan 2025</div>
+        <div class="proj-title">Fitness Tracker &amp; Management System</div>
+        <div class="proj-stack">PHP · SQL · MVC</div>
+        <div class="proj-desc">Full-stack web app for workout logging, goal setting, and progress tracking. Role-based auth for admins and users. Documented with SRS &amp; SDD specs.</div>
+        <div class="proj-tags"><span class="proj-tag">PHP</span><span class="proj-tag">MVC</span><span class="proj-tag">Role-based Auth</span></div>
+        <div class="proj-arrow">↗</div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-num">003 · Jun 2024</div>
+        <div class="proj-title">Bookstore Web App</div>
+        <div class="proj-stack">Node.js · Express.js · MongoDB · AJAX · JWT</div>
+        <div class="proj-desc">Online bookstore with session &amp; JWT auth, dynamic navigation by user role, and AJAX-driven smooth UX. Optimized for performance and minimal page reloads.</div>
+        <div class="proj-tags"><span class="proj-tag">Full-Stack</span><span class="proj-tag">JWT</span><span class="proj-tag">MongoDB</span></div>
+        <div class="proj-arrow">↗</div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-num">004 · Jan 2024</div>
+        <div class="proj-title">Houses Management System</div>
+        <div class="proj-stack">Java · JavaFX · Eclipse</div>
+        <div class="proj-desc">Desktop GUI app for house reservations. Supports tenants, landlords, and admins via OOP inheritance. Dynamic listing with filters and full booking lifecycle management.</div>
+        <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">JavaFX</span><span class="proj-tag">OOP</span></div>
+        <div class="proj-arrow">↗</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ░░ COURSEWORK ░░ -->
+<section id="courses" style="min-height:auto;padding:4rem 2.5rem">
+  <div class="courses-inner">
+    <div>
+      <div class="section-label">04 // coursework</div>
+      <h2 class="section-title">Relevant Courses</h2>
+    </div>
+    <div class="course-grid">
+      <div class="course-pill">Data Structures</div>
+      <div class="course-pill">OOP</div>
+      <div class="course-pill">Algorithms Analysis</div>
+      <div class="course-pill">Database Management</div>
+      <div class="course-pill">Software Engineering</div>
+      <div class="course-pill">Operating Systems</div>
+      <div class="course-pill">Data Mining</div>
+      <div class="course-pill">IT Infrastructure</div>
+      <div class="course-pill">Data Science</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ CONTACT ░░ -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label">05 // contact</div>
+    <h2>Let's build something <span>real</span>.</h2>
+    <p>Open to internships, research collaborations, and interesting data problems. Based in Cairo — available remotely too.</p>
+    <a href="mailto:maryamsoubky@gmail.com" class="btn filled" style="margin-top:0.5rem">maryamsoubky@gmail.com</a>
+    <div class="contact-links">
+      <a href="https://github.com/MaryamSoubky" target="_blank" class="c-link">GitHub</a>
+      <a href="https://linkedin.com/in/Maryam-Soubky" target="_blank" class="c-link">LinkedIn</a>
+      <a href="tel:+201029833848" class="c-link">+20 102-983-3848</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 &nbsp;·&nbsp; Maryam Soubky &nbsp;·&nbsp; <span style="color:var(--accent)">Cairo, Egypt</span>
+</footer>
+
+<script>
+/* ── cursor ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function lc(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lc);})();
+document.querySelectorAll('a,.btn,.proj-card,.stat-box,.chip,.course-pill').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';ring.style.transform='translate(-50%,-50%) scale(1.5)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)';});
+});
+
+/* ── particle canvas ── */
+const canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const COLS=['rgba(150,129,217,','rgba(51,101,202,','rgba(44,123,145,'];
+class P{
+  constructor(){this.reset(true)}
+  reset(init){
+    this.x=Math.random()*W;this.y=init?Math.random()*H:H+10;
+    this.vx=(Math.random()-0.5)*0.35;this.vy=-(Math.random()*0.45+0.1);
+    this.r=Math.random()*1.8+0.4;this.alpha=0;
+    this.maxA=Math.random()*0.65+0.2;this.life=0;this.maxL=Math.random()*300+200;
+    this.col=COLS[Math.floor(Math.random()*COLS.length)];
+  }
+  update(){
+    this.x+=this.vx;this.y+=this.vy;this.life++;
+    const h=this.maxL/2;
+    this.alpha=this.life<h?(this.life/h)*this.maxA:(1-(this.life-h)/h)*this.maxA;
+    if(this.life>=this.maxL||this.y<-10)this.reset(false);
+  }
+  draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=this.col+this.alpha+')';ctx.fill();}
+}
+const particles=[];for(let i=0;i<150;i++)particles.push(new P());
+function drawGrid(){
+  ctx.strokeStyle='rgba(44,123,145,0.04)';ctx.lineWidth=1;
+  for(let x=0;x<W;x+=70){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=70){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+}
+function connect(){
+  for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<110){ctx.strokeStyle='rgba(150,129,217,'+(0.12*(1-d/110))+')';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.stroke();}
+  }
+}
+(function anim(){ctx.clearRect(0,0,W,H);drawGrid();particles.forEach(p=>{p.update();p.draw();});connect();requestAnimationFrame(anim);})();
+
+/* ── skill bars ── */
+const skillData=[
+  {name:'Python & Data Tools',pct:88},
+  {name:'Java / OOP & Systems',pct:84},
+  {name:'SQL & Databases',pct:82},
+  {name:'Web Dev (Node / PHP / JS)',pct:76},
+  {name:'C++ & Algorithms',pct:72},
+];
+const barsEl=document.getElementById('bars');
+skillData.forEach(s=>{
+  barsEl.innerHTML+=`<div class="skill-bar-row"><div class="sb-top"><span class="sb-name">${s.name}</span><span class="sb-pct">${s.pct}%</span></div><div class="sb-track"><div class="sb-fill" data-pct="${s.pct}"></div></div></div>`;
+});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('.sb-fill').forEach(b=>b.style.width=b.dataset.pct+'%');});
+},{threshold:0.3});
+const sk=document.getElementById('skills');if(sk)obs.observe(sk);
+</script>
+</body>
+</html>
